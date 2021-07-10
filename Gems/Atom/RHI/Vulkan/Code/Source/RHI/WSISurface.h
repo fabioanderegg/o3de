@@ -29,6 +29,7 @@ namespace AZ
             struct Descriptor
             {
                 RHI::WindowHandle m_windowHandle;
+                void* m_nativeConnection;
             };
 
             static RHI::Ptr<WSISurface> Create();
