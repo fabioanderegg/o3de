@@ -22,6 +22,7 @@
 #include <QBoxLayout>
 #include <QWindow>
 #include <QMouseEvent>
+#include <QtGui/qpa/qplatformnativeinterface.h>
 
 namespace AtomToolsFramework
 {
@@ -60,6 +61,14 @@ namespace AtomToolsFramework
         params.device = AZ::RHI::RHISystemInterface::Get()->GetDevice();
         params.windowHandle = reinterpret_cast<AzFramework::NativeWindowHandle>(winId());
         params.id = id;
+
+        if (QGuiApplication::platformName() == QLatin1String("xcb"))
+        {
+            QPlatformNativeInterface *native = qApp->platformNativeInterface();
+            AZ_Assert(native, "Failed to fetch Qt platform native interface");
+            params.nativeConnection = native->nativeResourceForIntegration(QByteArray("connection"));
+        }
+
         AzFramework::WindowRequestBus::Handler::BusConnect(params.windowHandle);
         m_viewportContext = viewportContextManager->CreateViewportContext(AZ::Name(), params);
 
