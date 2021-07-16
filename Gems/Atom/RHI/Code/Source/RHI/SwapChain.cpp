@@ -164,6 +164,8 @@ namespace AZ
                 m_currentImageIndex = 0;
             }
 
+            resizeCounter++;
+
             return resultCode;
         }
 
